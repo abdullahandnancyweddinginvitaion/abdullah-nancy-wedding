@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6efe5" />
+  <title>Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#f7f0e8;
+      --ivory:#fffaf4;
+      --gold:#a9854d;
+      --gold-soft:#cbb17c;
+      --ink:#5b4733;
+      --sage:#7f8469;
+      --shadow:0 20px 50px rgba(79,59,34,.14);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+    body.rtl{font-family:'Noto Naskh Arabic',serif;direction:rtl}
+    a{color:inherit;text-decoration:none}
+    .screen{min-height:100vh;position:relative;display:grid;place-items:center;overflow:hidden}
+    .hero{background:var(--cream);}
+    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(247,240,232,.55) 88%,var(--cream));pointer-events:none}
+    .hero-card{position:relative;z-index:2;text-align:center;width:min(88vw,680px);padding:44px 28px 34px;border:1px solid rgba(169,133,77,.35);background:rgba(255,250,244,.66);backdrop-filter:blur(6px);box-shadow:var(--shadow);border-radius:28px;opacity:0;transform:translateY(20px);transition:.9s ease}
+    .hero-card.visible{opacity:1;transform:none}
+    .eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:.8rem;color:var(--gold);font-weight:600}
+    .names{font-family:'Alex Brush',cursive;font-size:clamp(3.8rem,11vw,7.6rem);line-height:.92;margin:18px 0 10px;color:#8c6a38;font-weight:400}
+    .amp{font-family:'Cormorant Garamond',serif;font-size:.46em;display:block;margin:.08em 0;color:var(--gold-soft)}
+    .subtitle{font-size:clamp(1.1rem,2.5vw,1.45rem);letter-spacing:.08em;margin:0 auto 26px;max-width:30ch}
+    .open-btn{border:none;background:linear-gradient(135deg,#b9975e,#8e6c3f);color:white;padding:14px 28px;border-radius:999px;font-family:inherit;font-size:1.05rem;letter-spacing:.08em;cursor:pointer;box-shadow:0 10px 28px rgba(123,89,45,.28);transition:.25s ease}
+    .open-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(123,89,45,.34)}
+    .scroll-hint{position:absolute;z-index:3;bottom:22px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;transition:.7s ease;pointer-events:none}
+    .scroll-hint.show{opacity:1}
+    .mouse{width:28px;height:44px;border:1.5px solid var(--gold);border-radius:20px;position:relative;background:rgba(255,255,255,.5)}
+    .mouse::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;border-radius:4px;background:var(--gold);transform:translateX(-50%);animation:wheel 1.8s infinite}
+    @keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
+
+    .section{padding:90px 20px;position:relative}
+    .inner{width:min(920px,100%);margin:auto;text-align:center}
+    .section-title{font-family:'Alex Brush',cursive;color:#8c6a38;font-size:clamp(3rem,8vw,5rem);margin:0 0 10px}
+    .section-kicker{letter-spacing:.24em;text-transform:uppercase;font-size:.82rem;color:var(--gold)}
+    .ornament{width:150px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);margin:22px auto;position:relative}
+    .ornament::after{content:'◆';position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);background:var(--cream);padding:0 10px;color:var(--gold);font-size:.6rem}
+    .copy{font-size:clamp(1.15rem,2.4vw,1.45rem);line-height:1.8;max-width:680px;margin:auto}
+
+    .date-card{margin:34px auto 0;max-width:760px;border:1px solid rgba(169,133,77,.35);border-radius:28px;background:rgba(255,250,244,.76);padding:34px 22px;box-shadow:var(--shadow)}
+    .big-date{font-size:clamp(4.6rem,14vw,8rem);line-height:.8;color:#8c6a38}
+    .month{font-size:1.25rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+    .time{font-size:1.5rem;margin-top:18px}
+
+    .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:32px auto 0;max-width:720px}
+    .count-box{background:rgba(255,255,255,.72);border:1px solid rgba(169,133,77,.22);border-radius:22px;padding:22px 8px;box-shadow:0 10px 28px rgba(79,59,34,.08)}
+    .count-num{font-size:clamp(2rem,6vw,3.6rem);line-height:1;color:#8c6a38}
+    .count-label{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;margin-top:8px;color:var(--gold)}
+
+    .photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+    .photo-placeholder{aspect-ratio:4/5;border-radius:28px;background:linear-gradient(145deg,#eee4d6,#fffaf4);border:1px solid rgba(169,133,77,.25);display:grid;place-items:center;color:#9c815f;font-size:1.1rem;box-shadow:var(--shadow)}
+
+    .venue-card{display:grid;grid-template-columns:1.05fr .95fr;gap:0;overflow:hidden;border-radius:30px;border:1px solid rgba(169,133,77,.3);box-shadow:var(--shadow);margin-top:34px;background:#fffaf4}
+    .venue-visual{min-height:340px;background:url('assets/invitation-bg.png') center 72%/cover no-repeat;position:relative}
+    .venue-visual::after{content:"";position:absolute;inset:0;background:rgba(255,250,244,.42)}
+    .venue-info{padding:46px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .venue-name{font-size:2.2rem;color:#8c6a38;margin-bottom:8px}
+    .map-btn{display:inline-block;margin-top:20px;border:1px solid var(--gold);padding:12px 20px;border-radius:999px;color:#8c6a38;background:#fff;transition:.2s ease}
+    .map-btn:hover{background:#f4eadb}
+
+    .final{background:linear-gradient(rgba(247,240,232,.4),rgba(247,240,232,.7)),url('assets/invitation-bg.png') center/cover no-repeat;min-height:85vh}
+    .final-card{background:rgba(255,250,244,.74);border:1px solid rgba(169,133,77,.3);padding:40px 28px;border-radius:28px;box-shadow:var(--shadow);width:min(88vw,700px);text-align:center}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.in{opacity:1;transform:none}
+
+    .fx{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;display:none}
+    .fx.active{display:block}
+    .petal{position:absolute;width:14px;height:22px;border-radius:70% 10% 70% 10%;background:linear-gradient(145deg,#fff6ea,#e7b98b);opacity:.9;animation:floatPetal linear forwards}
+    @keyframes floatPetal{0%{transform:translateY(-8vh) rotate(0deg);opacity:0}10%{opacity:.95}100%{transform:translateY(112vh) translateX(var(--drift)) rotate(720deg);opacity:.2}}
+
+    .music-btn{position:fixed;right:18px;bottom:18px;z-index:20;width:48px;height:48px;border-radius:50%;border:1px solid rgba(169,133,77,.45);background:rgba(255,250,244,.9);display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px rgba(79,59,34,.16);font-size:1.15rem}
+
+    @media(max-width:700px){
+      .hero-card{padding:34px 20px 28px;border-radius:22px}
+      .section{padding:72px 16px}
+      .countdown{grid-template-columns:repeat(2,1fr)}
+      .photo-strip{grid-template-columns:1fr}
+      .venue-card{grid-template-columns:1fr}
+      .venue-visual{min-height:260px}
+      .venue-info{padding:34px 22px}
+    }
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="fx" id="fx"></div>
+  <button class="music-btn" id="musicBtn" aria-label="Toggle music" title="Add your own music file in the code">♫</button>
+
+  <section class="screen hero" id="home">
+    <div class="hero-card" id="heroCard">
+      <div class="eyebrow" dir="rtl">ليلة فرح</div>
+      <h1 class="names"><span id="groomName">Groom</span><span class="amp">&</span><span id="brideName">Bride</span></h1>
+      <p class="subtitle" dir="rtl">عبدالله &amp; نانسي</p>
+      <button class="open-btn" id="openBtn">Open Invitation</button>
+    </div>
+    <div class="scroll-hint" id="scrollHint"><span>Scroll</span><div class="mouse"></div></div>
+  </section>
+
+  <main id="content">
+    <section class="section">
+      <div class="inner reveal">
+        <div class="section-kicker">Our Wedding</div>
+        <h2 class="section-title">A Beautiful Beginning</h2>
+        <div class="ornament"></div>
+        <p class="copy" id="message">With love in our hearts, we invite you to share in the joy of our wedding day and celebrate the beginning of our new journey together.</p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#fbf6ef">
+      <div class="inner reveal">
+        <div class="section-kicker">Save the Date</div>
+        <h2 class="section-title">The Day</h2>
+        <div class="date-card">
+          <div class="month" id="weekday">Saturday</div>
+          <div class="big-date" id="dayNum">31</div>
+          <div class="month" id="monthYear">December • 2026</div>
+          <div class="ornament"></div>
+          <div class="time" id="timeText">6:30 PM</div>
+        </div>
+        <div class="countdown" id="countdown">
+          <div class="count-box"><div class="count-num" id="days">00</div><div class="count-label">Days</div></div>
+          <div class="count-box"><div class="count-num" id="hours">00</div><div class="count-label">Hours</div></div>
+          <div class="count-box"><div class="count-num" id="minutes">00</div><div class="count-label">Minutes</div></div>
+          <div class="count-box"><div class="count-num" id="seconds">00</div><div class="count-label">Seconds</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="inner reveal">
+        <div class="section-kicker">Memories</div>
+        <h2 class="section-title">Our Story</h2>
+        <div class="ornament"></div>
+        <div class="photo-strip">
+          <div class="photo-placeholder">Add Couple Photo 1</div>
+          <div class="photo-placeholder">Add Couple Photo 2</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:#fbf6ef">
+      <div class="inner reveal">
+        <div class="section-kicker">Celebrate With Us</div>
+        <h2 class="section-title">Venue</h2>
+        <div class="venue-card">
+          <div class="venue-visual"></div>
+          <div class="venue-info">
+            <div class="venue-name" id="venueName">Wedding Venue</div>
+            <div id="venueAddress">Add venue address here</div>
+            <div class="ornament"></div>
+            <div id="venueTime">Doors open at 6:00 PM</div>
+            <a class="map-btn" id="mapBtn" href="https://maps.google.com" target="_blank" rel="noopener">Open in Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen final">
+      <div class="final-card reveal">
+        <div class="section-kicker">With Love</div>
+        <h2 class="section-title">We Can't Wait to Celebrate</h2>
+        <div class="ornament"></div>
+        <p class="copy">Your presence will make our day even more special.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ===== EASY CUSTOMIZATION =====
+    const CONFIG = {
+      groom: 'عبدالله',
+      bride: 'نانسي',
+      eventDate: '2026-11-08T19:00:00+03:00',
+      message: 'ليلة فرح عبدالله & نانسي — نتشرف بمشاركتكم فرحتنا في هذه الليلة المميزة.',
+      venueName: "L'Oréal Wedding Hall",
+      venueAddress: 'القاعة: العنوان: قاعة لوريال - نادي الجلاء - مصر الجديدة',
+      venueTime: 'من ٧ حتى ١١ مساءً',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=L%27Or%C3%A9al+Wedding+Hall+El+Galaa+Club+Heliopolis+Cairo',
+      // Optional: add a local audio file to assets/music.mp3, then change to 'assets/music.mp3'
+      musicUrl: ''
+    };
+
+    const $ = (id) => document.getElementById(id);
+    $('groomName').textContent = CONFIG.groom;
+    $('brideName').textContent = CONFIG.bride;
+    $('message').textContent = CONFIG.message;
+    $('venueName').textContent = CONFIG.venueName;
+    $('venueAddress').textContent = CONFIG.venueAddress;
+    $('venueTime').textContent = CONFIG.venueTime;
+    $('mapBtn').href = CONFIG.mapsUrl;
+
+    const eventDate = new Date(CONFIG.eventDate);
+    $('weekday').textContent = eventDate.toLocaleDateString('en-US',{weekday:'long'});
+    $('dayNum').textContent = String(eventDate.getDate()).padStart(2,'0');
+    $('monthYear').textContent = eventDate.toLocaleDateString('en-US',{month:'long',year:'numeric'}).replace(' ',' • ');
+    $('timeText').textContent = CONFIG.venueTime;
+
+    function tick(){
+      const diff = eventDate - new Date();
+      if(diff <= 0){ $('countdown').innerHTML = '<div style="grid-column:1/-1;font-size:2rem;color:#8c6a38">Today is the day ✨</div>'; return; }
+      const d=Math.floor(diff/86400000), h=Math.floor(diff/3600000)%24, m=Math.floor(diff/60000)%60, s=Math.floor(diff/1000)%60;
+      $('days').textContent=String(d).padStart(2,'0'); $('hours').textContent=String(h).padStart(2,'0'); $('minutes').textContent=String(m).padStart(2,'0'); $('seconds').textContent=String(s).padStart(2,'0');
+    }
+    tick(); setInterval(tick,1000);
+
+    const heroCard = $('heroCard');
+    requestAnimationFrame(()=>setTimeout(()=>heroCard.classList.add('visible'),250));
+
+    function petals(){
+      const fx=$('fx'); fx.innerHTML=''; fx.classList.add('active');
+      for(let i=0;i<26;i++){
+        const p=document.createElement('span'); p.className='petal';
+        p.style.left=Math.random()*100+'vw'; p.style.top=(-10-Math.random()*30)+'vh';
+        p.style.setProperty('--drift', (Math.random()*160-80)+'px');
+        p.style.animationDuration=(4.5+Math.random()*4)+'s';
+        p.style.animationDelay=(Math.random()*1.2)+'s';
+        p.style.transform=`scale(${.65+Math.random()*.8})`;
+        fx.appendChild(p);
+      }
+      setTimeout(()=>{fx.classList.remove('active'); fx.innerHTML='';},9000);
+    }
+
+    $('openBtn').addEventListener('click',()=>{
+      petals();
+      $('scrollHint').classList.add('show');
+      setTimeout(()=>document.querySelector('main .section').scrollIntoView({behavior:'smooth'}),700);
+      setTimeout(()=>$('scrollHint').classList.remove('show'),5000);
+      if(audio && audio.paused){audio.play().catch(()=>{});}
+    });
+
+    const io=new IntersectionObserver((entries)=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.18});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    let audio = CONFIG.musicUrl ? new Audio(CONFIG.musicUrl) : null;
+    if(audio){audio.loop=true; audio.volume=.45;}
+    $('musicBtn').addEventListener('click',()=>{
+      if(!audio){alert('Add an MP3 file and set CONFIG.musicUrl to use background music.');return;}
+      if(audio.paused){audio.play();$('musicBtn').textContent='❚❚';} else {audio.pause();$('musicBtn').textContent='♫';}
+    });
+  </script>
+</body>
+</html>
