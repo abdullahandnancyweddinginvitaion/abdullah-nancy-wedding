@@ -24,10 +24,32 @@
     body.rtl{font-family:'Noto Naskh Arabic',serif;direction:rtl}
     a{color:inherit;text-decoration:none}
     .screen{min-height:100vh;position:relative;display:grid;place-items:center;overflow:hidden}
-    .hero{background:var(--cream);}
-    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(247,240,232,.55) 88%,var(--cream));pointer-events:none}
-    .hero-card{position:relative;z-index:2;text-align:center;width:min(88vw,680px);padding:44px 28px 34px;border:1px solid rgba(169,133,77,.35);background:rgba(255,250,244,.66);backdrop-filter:blur(6px);box-shadow:var(--shadow);border-radius:28px;opacity:0;transform:translateY(20px);transition:.9s ease}
+    .hero{
+  position:relative;
+  overflow:hidden;
+  background:#f7f0e8;
+}
+    .hero-videohero-video{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  z-index:1;
+  display:block;
+    .hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.15);
+  z-index:2;
+  pointer-events:none;
+    .hero-card{
+  position:relative;
+  z-index:3;
+}
     .hero-card.visible{opacity:1;transform:none}
     .eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:.8rem;color:var(--gold);font-weight:600}
     .names{font-family:'Alex Brush',cursive;font-size:clamp(3.8rem,11vw,7.6rem);line-height:.92;margin:18px 0 10px;color:#8c6a38;font-weight:400}
@@ -36,7 +58,10 @@
     .open-btn{border:none;background:linear-gradient(135deg,#b9975e,#8e6c3f);color:white;padding:14px 28px;border-radius:999px;font-family:inherit;font-size:1.05rem;letter-spacing:.08em;cursor:pointer;box-shadow:0 10px 28px rgba(123,89,45,.28);transition:.25s ease}
     .open-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(123,89,45,.34)}
     .scroll-hint{position:absolute;z-index:3;bottom:22px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;transition:.7s ease;pointer-events:none}
-    .scroll-hint.show{opacity:1}
+    .scroll-hint{
+  position:relative;
+  z-index:3;
+}
     .mouse{width:28px;height:44px;border:1.5px solid var(--gold);border-radius:20px;position:relative;background:rgba(255,255,255,.5)}
     .mouse::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;border-radius:4px;background:var(--gold);transform:translateX(-50%);animation:wheel 1.8s infinite}
     @keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
